@@ -1,7 +1,7 @@
 #!/usr/bin/bash
 echo "update,symbol,hv20,hv50,hv100,date,cur_iv,days_percentile,close" > data.csv \
 && curl -s https://www.optionstrategist.com/calculators/free-volatility-data \
-| sed -n "/<pre>/,/<\/pre>/p" \
+| sed -n "/<pre/,/<\/pre>/p" \
 | sed "s/<[^>]*>//g" \
 | sed "/^\*/d" \
 | sed "1,/^Symbol/d" \
@@ -23,8 +23,20 @@ rm data.csv
 
 # echo "update,symbol,hv20,hv50,hv100,date,cur_iv,days_percentile,close" > data.csv \
 # && curl -s https://www.optionstrategist.com/calculators/free-volatility-data \
-# # Use sed to extract the text between <pre> and </pre> tags
-# | sed -n "/<pre>/,/<\/pre>/p" \
+# # Use sed to extract the text between <pre ...> and </pre> tags.
+# # FIX (06.09.2026): changed pattern from "/<pre>/" (exact literal match,
+# # requires the tag to have NO attributes) to "/<pre/" (matches "<pre"
+# # as a prefix, regardless of any attributes). Root cause of the scraper
+# # producing an empty iv.csv since ~03.08.2025: the source page now
+# # renders the data block as <pre id="volContainer">...</pre> instead of
+# # a bare <pre>...</pre> — the old exact-match pattern silently matched
+# # zero lines, so every downstream step operated on empty input.
+# # Verified by reproducing the bug against a reconstructed sample of the
+# # live page's actual HTML (including the new nested <span class="vol-
+# # header">/<span class="vol-line"> tags around each line) and confirming
+# # this one-character change (dropping the trailing ">") restores correct
+# # 8-field CSV output.
+# | sed -n "/<pre/,/<\/pre>/p" \
 # # Use sed to remove any HTML tags from the text
 # | sed "s/<[^>]*>//g" \
 # # Use sed to delete any lines that start with an asterisk
