@@ -1,8 +1,4 @@
 update,symbol,hv20,hv50,hv100,date,cur_iv,days_percentile,close
-2026-09-05,  hv20:,20-day,HISTORICAL,(actual),volatility,of,the,underlying
-2026-09-05,          (options,don't,trade,every,day,on,every,underlying
-2026-09-05,  cur_iv:the,implied,volatility,of,these,options,on,DATE
-2026-09-05,NOTE:,futures,symbols,begin,with,the,character,@
 2026-09-05,$DJX,9,12,12,260904,12.37,585/  4%ile,534.14
 2026-09-05,$NDX,13,22,24,260608,25.18,191/ 97%ile,29544.19
 2026-09-05,$RUT,16,18,24,260904,17.97,599/  5%ile,2975.65
